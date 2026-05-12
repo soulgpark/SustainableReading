@@ -1,0 +1,59 @@
+CREATE TABLE Users (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(255) UNIQUE NOT NULL,
+    Country VARCHAR(100),
+    City VARCHAR(100),
+    Preferences JSON,
+    PasswordHash VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Books (
+    BookID INT AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    Author VARCHAR(100),
+    Publisher VARCHAR(100),
+    Year INT,
+    ISBN VARCHAR(13) UNIQUE
+);
+
+CREATE TABLE Formats (
+    FormatID INT AUTO_INCREMENT PRIMARY KEY,
+    BookID INT NOT NULL,
+    Type ENUM('Paper', 'E-Book') NOT NULL,
+    Weight DECIMAL(10, 2),
+    DigitalFileSize DECIMAL(10, 2),
+    Attributes JSON,
+    FOREIGN KEY (BookID) REFERENCES Books(BookID) ON DELETE CASCADE
+);
+
+CREATE TABLE EnvironmentalImpact (
+    ImpactID INT AUTO_INCREMENT PRIMARY KEY,
+    FormatID INT NOT NULL,
+    CarbonEmission DECIMAL(10, 2) NOT NULL,
+    EnergyConsumption DECIMAL(10, 2) NOT NULL,
+    WaterUsage DECIMAL(10, 2) NOT NULL,
+    Recyclability BOOLEAN,
+    FOREIGN KEY (FormatID) REFERENCES Formats(FormatID) ON DELETE CASCADE
+);
+
+CREATE TABLE Comparisons (
+    ComparisonID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT NOT NULL,
+    BookID INT NOT NULL,
+    PaperImpact DECIMAL(10, 2),
+    EBookImpact DECIMAL(10, 2),
+    Recommendation TEXT,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE,
+    FOREIGN KEY (BookID) REFERENCES Books(BookID) ON DELETE CASCADE
+);
+
+CREATE TABLE UserChoices (
+    ChoiceID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT NOT NULL,
+    FormatID INT NOT NULL,
+    DateChosen DATETIME NOT NULL,
+    Feedback TEXT,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE,
+    FOREIGN KEY (FormatID) REFERENCES Formats(FormatID) ON DELETE CASCADE
+);
