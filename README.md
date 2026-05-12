@@ -111,8 +111,8 @@ sustainable-reading-db/
 ├── README.md
 ├── schema.sql         # DDL for table creation
 ├── sample_data.sql    # INSERT sample data
-├── queries.sql        # Recommendation and analysis queries
-└── report.pdf         # Project report
+└──  queries.sql        # Recommendation and analysis queries
+
 ```
 
 ## 🌱 Future Plans
